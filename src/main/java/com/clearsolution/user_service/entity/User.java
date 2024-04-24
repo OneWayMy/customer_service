@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -31,9 +32,8 @@ public class User {
     @Column(name = "email", length = 64, nullable = false, unique = true)
     private String email;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "birth_date", nullable = false)
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "address", length = 128)
     private String address;

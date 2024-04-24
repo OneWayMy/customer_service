@@ -23,3 +23,7 @@ server:
 logging:
   level:
     root: info
+
+registration:
+  user:
+    min_age: 18

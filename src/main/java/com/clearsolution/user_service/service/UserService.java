@@ -14,6 +14,5 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void CreateUser(UserDto userDto){
-
     }
 }

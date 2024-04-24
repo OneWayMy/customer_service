@@ -1,6 +1,7 @@
 package com.clearsolution.user_service.controller;
 
-import com.clearsolution.user_service.dto.UserDto;
+import com.clearsolution.user_service.ViewModels.UserVM;
+import com.clearsolution.user_service.dto.UserRegistrationRequest;
 import com.clearsolution.user_service.service.UserService;
 import com.clearsolution.user_service.utils.ControllerValidator;
 import jakarta.validation.Valid;
@@ -20,12 +21,12 @@ public class UserController {
     private final UserService userService;
     private final ControllerValidator validator;
     @PostMapping("/registration")
-    public void CreateUser(@RequestBody @Valid UserDto userDto) {
+    public UserVM CreateUser(@RequestBody @Valid UserRegistrationRequest registrationRequest) {
         log.info("Received request to create a user");
 
-        validator.validateUserRegistrationDetails(userDto.getBirthDate());
+        validator.validateUserRegistrationDetails(registrationRequest.getBirthDate());
         log.info("User passed all required validations for registration");
 
-        userService.CreateUser(userDto);
+        return userService.CreateUser(registrationRequest);
     }
 }

@@ -10,15 +10,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-    private long id;
+public class UserRegistrationRequest {
     @NotNull(message = "User first name cant be null")
     @NotBlank(message = "User first name cant be blank")
     @Size(max = 64, message = "First name length must not exceed 64 characters")
@@ -34,8 +31,6 @@ public class UserDto {
     private String email;
     @NotNull(message = "User birth date cant be null")
     private LocalDate birthDate;
-    private Optional<String> address;
-    private Optional<String> phoneNumber;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String address;
+    private String phoneNumber;
 }

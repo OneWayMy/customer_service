@@ -134,7 +134,7 @@ public class UserServiceTest {
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-        UserVM result = userService.updateUserInfo(1L, updateRequest, true);
+        UserVM result = userService.updateUserInfo(1L, updateRequest, false);
 
         verify(userRepository).findById(1L);
         verify(userValidator).validateUserBirthAndAge(birthDate);

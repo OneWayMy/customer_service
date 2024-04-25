@@ -128,7 +128,7 @@ public class UserServiceTest {
                 .firstName("Current name")
                 .lastName("Current name")
                 .email("john.currentDoe@example.com")
-                .birthDate(LocalDate.of(1990,1,1))
+                .birthDate(LocalDate.of(1990, 1, 1))
                 .address("1 Main St")
                 .phoneNumber("111-1111-1111")
                 .build();
@@ -146,6 +146,11 @@ public class UserServiceTest {
         assertEquals(birthDate, result.getBirthDate());
         assertEquals(updatedPhoneNumber, result.getPhoneNumber());
         assertEquals(updatedAddress, result.getAddress());
+    }
 
+    @Test
+    void deleteUserByIdTest() {
+        userService.deleteUserById(1L);
+        verify(userRepository).deleteById(1L);
     }
 }

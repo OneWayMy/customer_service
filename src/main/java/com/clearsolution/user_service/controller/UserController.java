@@ -33,4 +33,10 @@ public class UserController {
         log.info("Received request to update all user fields");
         return userService.updateUserInfo(updateRequest, false);
     }
+
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable long userId) {
+        log.info("Received request to delete User with ID: {}", userId);
+        userService.deleteUserById(userId);
+    }
 }

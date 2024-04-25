@@ -38,12 +38,12 @@ public class UserService {
     }
 
     @Transactional
-    public UserVM updateUserInfo(UserUpdateRequest updateRequest, boolean isPartialUpdate){
+    public UserVM updateUserInfo(UserUpdateRequest updateRequest, boolean isPartialUpdate) {
         long userId = updateRequest.getUserId();
         LocalDate userBirthDate = updateRequest.getBirthDate();
 
         if (userBirthDate != null) {
-           validator.validateUserBirthAndAge(userBirthDate);
+            validator.validateUserBirthAndAge(userBirthDate);
         }
 
         log.info("User with ID {} has passed validation for updates.", userId);
@@ -62,14 +62,18 @@ public class UserService {
         return userMapper.toVM(user);
     }
 
-    private void updatePartialUserFields(User user, UserUpdateRequest updateRequest){
+    public void deleteUserById(long userId) {
+        userRepository.deleteById(userId);
+    }
+
+    private void updatePartialUserFields(User user, UserUpdateRequest updateRequest) {
         user.updatePersonalInfo(updateRequest.getFirstName(), updateRequest.getLastName(), updateRequest.getBirthDate());
         user.updateContactInfo(updateRequest.getPhoneNumber(), updateRequest.getEmail(), updateRequest.getAddress());
 
         log.info("User with ID {} was successfully updated partial fields.", updateRequest.getUserId());
     }
 
-    private void updateAllUserFields(User user, UserUpdateRequest updateRequest){
+    private void updateAllUserFields(User user, UserUpdateRequest updateRequest) {
         user.updateInfo(
                 updateRequest.getFirstName(),
                 updateRequest.getLastName(),

@@ -1,5 +1,6 @@
 package com.clearsolution.user_service.utils;
 
+import com.clearsolution.user_service.exception.DataValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class UserValidator {
                 .getYears();
 
         if (userAge <= MIN_REGISTRATION_USER_AGE) {
-            throw new IllegalArgumentException(String.format("User must be at least %d years old to register.",
+            throw new DataValidationException(String.format("User must be at least %d years old to register.",
                     MIN_REGISTRATION_USER_AGE));
         }
     }
@@ -35,7 +36,7 @@ public class UserValidator {
         LocalDate currentTime = LocalDate.now();
 
         if (birthdate.isEqual(currentTime) || birthdate.isAfter(currentTime)) {
-            throw new IllegalArgumentException("Birth date must be earlier than current date");
+            throw new DataValidationException("Birth date must be earlier than current date");
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.clearsolution.user_service.service;
 
 import com.clearsolution.user_service.ViewModels.UserVM;
+import com.clearsolution.user_service.exception.DataValidationException;
 import com.clearsolution.user_service.request.UserUpdateRequest;
 import com.clearsolution.user_service.request.UserCreateRequest;
 import com.clearsolution.user_service.entity.User;
@@ -66,7 +67,7 @@ public class UserService {
 
     public List<UserVM> getUsersByDate(LocalDate fromDate, LocalDate toDate) {
         if (fromDate.isAfter(toDate)) {
-            throw new IllegalArgumentException("'From' date cannot be after 'to' date.");
+            throw new DataValidationException("'From' date cannot be after 'to' date.");
         }
 
         List<User> users = userRepository.findByBirthDateRange(fromDate, toDate);

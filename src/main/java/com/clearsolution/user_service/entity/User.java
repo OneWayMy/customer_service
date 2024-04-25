@@ -67,11 +67,11 @@ public class User {
 
     public void updatePersonalInfo(String userFirstName, String userLastName, LocalDate userBirthDate)
     {
-        if (firstName != null) {
+        if (userFirstName != null) {
             this.firstName = userFirstName;
         }
 
-        if (lastName != null) {
+        if (userLastName != null) {
             this.lastName = userLastName;
         }
 

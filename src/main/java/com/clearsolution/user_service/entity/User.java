@@ -51,33 +51,46 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public void updatePersonalInfo(String customerFirstName, String customerLastName, LocalDate customerBirthDate)
+    public void updateInfo(
+            String userFirstName, String userLastName, LocalDate userBirthDate,
+            String userPhone, String userEmail, String userAddress
+    )
+    {
+        this.firstName = userFirstName != null ? userFirstName : this.firstName;
+        this.lastName = userLastName != null ? userLastName : this.lastName;
+        this.birthDate = userBirthDate != null ? userBirthDate : this.birthDate;
+        this.phoneNumber = userPhone;
+        this.email = userEmail != null ? userEmail : this.email;
+        this.address = userAddress;
+    }
+
+    public void updatePersonalInfo(String userFirstName, String userLastName, LocalDate userBirthDate)
     {
         if (firstName != null) {
-            this.firstName = customerFirstName;
+            this.firstName = userFirstName;
         }
 
         if (lastName != null) {
-            this.lastName = customerLastName;
+            this.lastName = userLastName;
         }
 
-        if (customerBirthDate != null) {
-            this.birthDate = customerBirthDate;
+        if (userBirthDate != null) {
+            this.birthDate = userBirthDate;
         }
     }
 
-    public void updateContactInfo(String customerPhone, String customerEmail, String customerAddress)
+    public void updateContactInfo(String userPhone, String userEmail, String userAddress)
     {
-        if (customerPhone != null) {
-            this.phoneNumber = customerPhone;
+        if (userPhone != null) {
+            this.phoneNumber = userPhone;
         }
 
-        if (customerEmail != null) {
-            this.email = customerEmail;
+        if (userEmail != null) {
+            this.email = userEmail;
         }
 
-        if (customerAddress != null) {
-            this.address = customerAddress;
+        if (userAddress != null) {
+            this.address = userAddress;
         }
     }
 }

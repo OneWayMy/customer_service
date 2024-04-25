@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserFieldsUpdateRequest {
+public class UserUpdateRequest {
     private long userId;
     private String firstName;
     private String lastName;

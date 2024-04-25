@@ -1,7 +1,7 @@
 package com.clearsolution.user_service.controller;
 
 import com.clearsolution.user_service.ViewModels.UserVM;
-import com.clearsolution.user_service.dto.UserFieldsUpdateRequest;
+import com.clearsolution.user_service.dto.UserUpdateRequest;
 import com.clearsolution.user_service.dto.UserRegistrationRequest;
 import com.clearsolution.user_service.service.UserService;
 import jakarta.validation.Valid;
@@ -23,8 +23,14 @@ public class UserController {
     }
 
     @PatchMapping("/update/field")
-    public UserVM updateUserPartial(@RequestBody @Valid UserFieldsUpdateRequest updateRequest) {
+    public UserVM updateUserPartial(@RequestBody @Valid UserUpdateRequest updateRequest) {
         log.info("Received request to update one/some user fields");
-        return userService.updateUserPartial(updateRequest);
+        return userService.updateUserInfo(updateRequest, true);
+    }
+
+    @PutMapping("/update/fields")
+    public UserVM updateAllUserFields(@RequestBody @Valid UserUpdateRequest updateRequest) {
+        log.info("Received request to update all user fields");
+        return userService.updateUserInfo(updateRequest, false);
     }
 }

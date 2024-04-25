@@ -1,7 +1,7 @@
 package com.clearsolution.user_service.service;
 
 import com.clearsolution.user_service.ViewModels.UserVM;
-import com.clearsolution.user_service.dto.UserFieldsUpdateRequest;
+import com.clearsolution.user_service.dto.UserUpdateRequest;
 import com.clearsolution.user_service.dto.UserRegistrationRequest;
 import com.clearsolution.user_service.entity.User;
 import com.clearsolution.user_service.mapper.UserMapper;
@@ -26,7 +26,7 @@ public class UserService {
     private final UserValidator validator;
 
     public UserVM createUser(UserRegistrationRequest registrationRequest) {
-        validator.validateUserRegistrationDetails(registrationRequest.getBirthDate());
+        validator.validateUserBirthAndAge(registrationRequest.getBirthDate());
         log.info("User passed all required validations for registration");
 
         User user = userMapper.toEntity(registrationRequest);
@@ -38,13 +38,12 @@ public class UserService {
     }
 
     @Transactional
-    public UserVM updateUserPartial(UserFieldsUpdateRequest updateRequest) {
+    public UserVM updateUserInfo(UserUpdateRequest updateRequest, boolean isPartialUpdate){
         long userId = updateRequest.getUserId();
         LocalDate userBirthDate = updateRequest.getBirthDate();
 
         if (userBirthDate != null) {
-            validator.validateUserBirthDate(userBirthDate);
-            validator.validateUserAge(userBirthDate);
+           validator.validateUserBirthAndAge(userBirthDate);
         }
 
         log.info("User with ID {} has passed validation for updates.", userId);
@@ -52,12 +51,34 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %d doesn't exist", userId)));
 
-        user.updatePersonalInfo(updateRequest.getFirstName(), updateRequest.getLastName(), userBirthDate);
-        user.updateContactInfo(updateRequest.getPhoneNumber(), updateRequest.getEmail(), updateRequest.getAddress());
-        log.info("User with ID {} was successfully updated.",userId);
+        if (isPartialUpdate) {
+            updatePartialUserFields(user, updateRequest);
+        } else {
+            updateAllUserFields(user, updateRequest);
+        }
 
         user.setUpdatedAt(LocalDateTime.now());
 
         return userMapper.toVM(user);
+    }
+
+    private void updatePartialUserFields(User user, UserUpdateRequest updateRequest){
+        user.updatePersonalInfo(updateRequest.getFirstName(), updateRequest.getLastName(), updateRequest.getBirthDate());
+        user.updateContactInfo(updateRequest.getPhoneNumber(), updateRequest.getEmail(), updateRequest.getAddress());
+
+        log.info("User with ID {} was successfully updated partial fields.", updateRequest.getUserId());
+    }
+
+    private void updateAllUserFields(User user, UserUpdateRequest updateRequest){
+        user.updateInfo(
+                updateRequest.getFirstName(),
+                updateRequest.getLastName(),
+                updateRequest.getBirthDate(),
+                updateRequest.getPhoneNumber(),
+                updateRequest.getEmail(),
+                updateRequest.getAddress()
+        );
+
+        log.info("User with ID {} was successfully updated all his fields.", updateRequest.getUserId());
     }
 }

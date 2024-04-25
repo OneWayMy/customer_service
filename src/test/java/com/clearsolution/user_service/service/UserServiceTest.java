@@ -1,7 +1,7 @@
 package com.clearsolution.user_service.service;
 
 import com.clearsolution.user_service.ViewModels.UserVM;
-import com.clearsolution.user_service.dto.UserFieldsUpdateRequest;
+import com.clearsolution.user_service.dto.UserUpdateRequest;
 import com.clearsolution.user_service.dto.UserRegistrationRequest;
 import com.clearsolution.user_service.entity.User;
 import com.clearsolution.user_service.mapper.UserMapperImpl;
@@ -77,14 +77,12 @@ public class UserServiceTest {
 
         LocalDate birthDate = LocalDate.of(2000, 1, 1);
 
-        UserFieldsUpdateRequest updateRequest = UserFieldsUpdateRequest.builder()
+        UserUpdateRequest updateRequest = UserUpdateRequest.builder()
                 .userId(1)
                 .firstName(updatedName)
                 .lastName(updatedSecondName)
                 .email(updatedEmail)
                 .birthDate(birthDate)
-                .address("200 Main St")
-                .phoneNumber("111-1111-1111")
                 .build();
 
         User user = User.builder()
@@ -95,14 +93,59 @@ public class UserServiceTest {
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-        UserVM result = userService.updateUserPartial(updateRequest);
+        UserVM result = userService.updateUserInfo(updateRequest, true);
 
         verify(userRepository).findById(1L);
-        verify(userValidator).validateUserAge(birthDate);
-        verify(userValidator).validateUserBirthDate(birthDate);
+        verify(userValidator).validateUserBirthAndAge(birthDate);
 
         assertEquals(updatedName, result.getFirstName());
         assertEquals(updatedSecondName, result.getLastName());
         assertEquals(updatedEmail, result.getEmail());
+    }
+
+    @Test
+    void updateAllFieldsTest() {
+        String updatedName = "Updated name";
+        String updatedSecondName = "Updated second name";
+        String updatedEmail = "john.updatedDoe@example.com";
+        String updatedAddress = "200 Updated St";
+        String updatedPhoneNumber = "999-9999-9999";
+
+        LocalDate birthDate = LocalDate.of(2000, 1, 1);
+
+        UserUpdateRequest updateRequest = UserUpdateRequest.builder()
+                .userId(1)
+                .firstName(updatedName)
+                .lastName(updatedSecondName)
+                .email(updatedEmail)
+                .birthDate(birthDate)
+                .address(updatedAddress)
+                .phoneNumber(updatedPhoneNumber)
+                .build();
+
+        User user = User.builder()
+                .id(1)
+                .firstName("Current name")
+                .lastName("Current name")
+                .email("john.currentDoe@example.com")
+                .birthDate(LocalDate.of(1990,1,1))
+                .address("1 Main St")
+                .phoneNumber("111-1111-1111")
+                .build();
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+
+        UserVM result = userService.updateUserInfo(updateRequest, true);
+
+        verify(userRepository).findById(1L);
+        verify(userValidator).validateUserBirthAndAge(birthDate);
+
+        assertEquals(updatedName, result.getFirstName());
+        assertEquals(updatedSecondName, result.getLastName());
+        assertEquals(updatedEmail, result.getEmail());
+        assertEquals(birthDate, result.getBirthDate());
+        assertEquals(updatedPhoneNumber, result.getPhoneNumber());
+        assertEquals(updatedAddress, result.getAddress());
+
     }
 }

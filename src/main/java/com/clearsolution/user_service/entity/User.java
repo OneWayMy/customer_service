@@ -62,6 +62,7 @@ public class User {
         this.phoneNumber = userPhone;
         this.email = userEmail != null ? userEmail : this.email;
         this.address = userAddress;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void updatePersonalInfo(String userFirstName, String userLastName, LocalDate userBirthDate)
@@ -77,6 +78,8 @@ public class User {
         if (userBirthDate != null) {
             this.birthDate = userBirthDate;
         }
+
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void updateContactInfo(String userPhone, String userEmail, String userAddress)
@@ -92,5 +95,7 @@ public class User {
         if (userAddress != null) {
             this.address = userAddress;
         }
+
+        this.updatedAt = LocalDateTime.now();
     }
 }

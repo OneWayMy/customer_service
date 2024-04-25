@@ -1,4 +1,4 @@
-package com.clearsolution.user_service.dto;
+package com.clearsolution.user_service.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRegistrationRequest {
+public class UserCreateRequest {
     @NotNull(message = "User first name cant be null")
     @NotBlank(message = "User first name cant be blank")
     private String firstName;

@@ -1,8 +1,8 @@
 package com.clearsolution.user_service.service;
 
 import com.clearsolution.user_service.ViewModels.UserVM;
-import com.clearsolution.user_service.dto.UserUpdateRequest;
-import com.clearsolution.user_service.dto.UserRegistrationRequest;
+import com.clearsolution.user_service.request.UserCreateRequest;
+import com.clearsolution.user_service.request.UserUpdateRequest;
 import com.clearsolution.user_service.entity.User;
 import com.clearsolution.user_service.mapper.UserMapperImpl;
 import com.clearsolution.user_service.repository.UserRepository;
@@ -16,6 +16,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,7 +37,7 @@ public class UserServiceTest {
 
     @Test
     void registerUserTest() {
-        UserRegistrationRequest request = UserRegistrationRequest.builder()
+        UserCreateRequest request = UserCreateRequest.builder()
                 .firstName("John")
                 .lastName("Doe")
                 .email("john.doe@example.com")
@@ -78,7 +79,6 @@ public class UserServiceTest {
         LocalDate birthDate = LocalDate.of(2000, 1, 1);
 
         UserUpdateRequest updateRequest = UserUpdateRequest.builder()
-                .userId(1)
                 .firstName(updatedName)
                 .lastName(updatedSecondName)
                 .email(updatedEmail)
@@ -93,7 +93,7 @@ public class UserServiceTest {
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-        UserVM result = userService.updateUserInfo(updateRequest, true);
+        UserVM result = userService.updateUserInfo(1L, updateRequest, true);
 
         verify(userRepository).findById(1L);
         verify(userValidator).validateUserBirthAndAge(birthDate);
@@ -114,7 +114,6 @@ public class UserServiceTest {
         LocalDate birthDate = LocalDate.of(2000, 1, 1);
 
         UserUpdateRequest updateRequest = UserUpdateRequest.builder()
-                .userId(1)
                 .firstName(updatedName)
                 .lastName(updatedSecondName)
                 .email(updatedEmail)
@@ -135,7 +134,7 @@ public class UserServiceTest {
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-        UserVM result = userService.updateUserInfo(updateRequest, true);
+        UserVM result = userService.updateUserInfo(1L, updateRequest, true);
 
         verify(userRepository).findById(1L);
         verify(userValidator).validateUserBirthAndAge(birthDate);
@@ -152,5 +151,49 @@ public class UserServiceTest {
     void deleteUserByIdTest() {
         userService.deleteUserById(1L);
         verify(userRepository).deleteById(1L);
+    }
+
+    @Test
+    void getUsersByDateTest() {
+       LocalDate fromDate = LocalDate.of(2000, 1,1);
+       LocalDate toDate = LocalDate.of(2005, 1,1);
+
+       User firstUser = User.builder()
+               .id(1)
+               .firstName("First user name")
+               .lastName("First user surname")
+               .email("firstUser@example.com")
+               .birthDate(LocalDate.of(2001, 1, 1))
+               .build();
+        User secondUser = User.builder()
+                .id(2)
+                .firstName("Second user name")
+                .lastName("Second user surname")
+                .email("secondUser@example.com")
+                .birthDate(LocalDate.of(2003, 1, 1))
+                .build();
+        User thirdUser = User.builder()
+                .id(3)
+                .firstName("Third user name")
+                .lastName("Third user surname")
+                .email("thirdUser@example.com")
+                .birthDate(LocalDate.of(2004, 1, 1))
+                .build();
+
+       List<User> returningUsers = List.of(firstUser, secondUser, thirdUser);
+
+       when(userRepository.findByBirthDateRange(fromDate, toDate)).thenReturn(returningUsers);
+
+       List<UserVM> result = userService.getUsersByDate(fromDate, toDate);
+
+
+       UserVM firstExpectedUser = userMapper.toVM(firstUser);
+       UserVM secondExpectedUser = userMapper.toVM(secondUser);
+       UserVM thirdExpectedUser = userMapper.toVM(thirdUser);
+
+       List<UserVM> expected = List.of(firstExpectedUser, secondExpectedUser, thirdExpectedUser);
+
+       verify(userRepository).findByBirthDateRange(fromDate, toDate);
+       assertEquals(expected, result);
     }
 }

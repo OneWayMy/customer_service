@@ -1,4 +1,4 @@
-package com.clearsolution.user_service.dto;
+package com.clearsolution.user_service.request;
 
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdateRequest {
-    private long userId;
     private String firstName;
     private String lastName;
     @Email(message = "Invalid email format")

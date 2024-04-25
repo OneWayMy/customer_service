@@ -48,7 +48,7 @@ public class UserService {
         }
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %d doesn't exist", userId)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("User with ID %d doesn't exist", userId)));
 
         if (isPartialUpdate) {
             updatePartialUserFields(user, updateRequest);

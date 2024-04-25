@@ -15,7 +15,7 @@ public class UserValidator {
     @Value("${registration.user.min_age}")
     private int MIN_REGISTRATION_USER_AGE;
 
-    public void validateUserBirthAndAge(LocalDate userBirthDate){
+    public void validateUserBirthAndAge(LocalDate userBirthDate) {
         validateUserBirthDate(userBirthDate);
         validateUserAge(userBirthDate);
     }

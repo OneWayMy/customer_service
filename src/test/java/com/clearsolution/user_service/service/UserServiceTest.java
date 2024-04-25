@@ -155,16 +155,16 @@ public class UserServiceTest {
 
     @Test
     void getUsersByDateTest() {
-       LocalDate fromDate = LocalDate.of(2000, 1,1);
-       LocalDate toDate = LocalDate.of(2005, 1,1);
+        LocalDate fromDate = LocalDate.of(2000, 1, 1);
+        LocalDate toDate = LocalDate.of(2005, 1, 1);
 
-       User firstUser = User.builder()
-               .id(1)
-               .firstName("First user name")
-               .lastName("First user surname")
-               .email("firstUser@example.com")
-               .birthDate(LocalDate.of(2001, 1, 1))
-               .build();
+        User firstUser = User.builder()
+                .id(1)
+                .firstName("First user name")
+                .lastName("First user surname")
+                .email("firstUser@example.com")
+                .birthDate(LocalDate.of(2001, 1, 1))
+                .build();
         User secondUser = User.builder()
                 .id(2)
                 .firstName("Second user name")
@@ -180,20 +180,20 @@ public class UserServiceTest {
                 .birthDate(LocalDate.of(2004, 1, 1))
                 .build();
 
-       List<User> returningUsers = List.of(firstUser, secondUser, thirdUser);
+        List<User> returningUsers = List.of(firstUser, secondUser, thirdUser);
 
-       when(userRepository.findByBirthDateRange(fromDate, toDate)).thenReturn(returningUsers);
+        when(userRepository.findByBirthDateRange(fromDate, toDate)).thenReturn(returningUsers);
 
-       List<UserVM> result = userService.getUsersByDate(fromDate, toDate);
+        List<UserVM> result = userService.getUsersByDate(fromDate, toDate);
 
 
-       UserVM firstExpectedUser = userMapper.toVM(firstUser);
-       UserVM secondExpectedUser = userMapper.toVM(secondUser);
-       UserVM thirdExpectedUser = userMapper.toVM(thirdUser);
+        UserVM firstExpectedUser = userMapper.toVM(firstUser);
+        UserVM secondExpectedUser = userMapper.toVM(secondUser);
+        UserVM thirdExpectedUser = userMapper.toVM(thirdUser);
 
-       List<UserVM> expected = List.of(firstExpectedUser, secondExpectedUser, thirdExpectedUser);
+        List<UserVM> expected = List.of(firstExpectedUser, secondExpectedUser, thirdExpectedUser);
 
-       verify(userRepository).findByBirthDateRange(fromDate, toDate);
-       assertEquals(expected, result);
+        verify(userRepository).findByBirthDateRange(fromDate, toDate);
+        assertEquals(expected, result);
     }
 }

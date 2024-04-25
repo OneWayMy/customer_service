@@ -54,8 +54,7 @@ public class User {
     public void updateInfo(
             String userFirstName, String userLastName, LocalDate userBirthDate,
             String userPhone, String userEmail, String userAddress
-    )
-    {
+    ) {
         this.firstName = userFirstName != null ? userFirstName : this.firstName;
         this.lastName = userLastName != null ? userLastName : this.lastName;
         this.birthDate = userBirthDate != null ? userBirthDate : this.birthDate;
@@ -65,8 +64,7 @@ public class User {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void updatePersonalInfo(String userFirstName, String userLastName, LocalDate userBirthDate)
-    {
+    public void updatePersonalInfo(String userFirstName, String userLastName, LocalDate userBirthDate) {
         if (userFirstName != null) {
             this.firstName = userFirstName;
         }
@@ -82,8 +80,7 @@ public class User {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void updateContactInfo(String userPhone, String userEmail, String userAddress)
-    {
+    public void updateContactInfo(String userPhone, String userEmail, String userAddress) {
         if (userPhone != null) {
             this.phoneNumber = userPhone;
         }

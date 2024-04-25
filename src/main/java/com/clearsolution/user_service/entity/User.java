@@ -50,4 +50,34 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public void updatePersonalInfo(String customerFirstName, String customerLastName, LocalDate customerBirthDate)
+    {
+        if (firstName != null) {
+            this.firstName = customerFirstName;
+        }
+
+        if (lastName != null) {
+            this.lastName = customerLastName;
+        }
+
+        if (customerBirthDate != null) {
+            this.birthDate = customerBirthDate;
+        }
+    }
+
+    public void updateContactInfo(String customerPhone, String customerEmail, String customerAddress)
+    {
+        if (customerPhone != null) {
+            this.phoneNumber = customerPhone;
+        }
+
+        if (customerEmail != null) {
+            this.email = customerEmail;
+        }
+
+        if (customerAddress != null) {
+            this.address = customerAddress;
+        }
+    }
 }

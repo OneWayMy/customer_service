@@ -7,8 +7,5 @@ CREATE TABLE users (
     address varchar(128),
     phone_number varchar(32) UNIQUE,
     created_at timestamptz DEFAULT current_timestamp,
-    updated_at timestamptz DEFAULT current_timestamp,
-
-    CHECK (birth_date < CURRENT_DATE),
-    CHECK (email ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+    updated_at timestamptz DEFAULT current_timestamp
 );

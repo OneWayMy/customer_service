@@ -9,7 +9,7 @@ import java.time.Period;
 
 @Component
 @RequiredArgsConstructor
-public class ControllerValidator {
+public class UserValidator {
 
     @Value("${registration.user.min_age}")
     private int MIN_REGISTRATION_USER_AGE;

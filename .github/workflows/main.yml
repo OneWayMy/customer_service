@@ -18,3 +18,11 @@ jobs:
         run: |
           curl -X POST "$API_URL" \
           -H "Authorization: Bearer $API_TOKEN"
+          
+  send-request-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Execute SLA Notification API Request with Production Environment
+        run: |
+          curl -X POST "${{ vars.FAANG_PROD_MENTOR_SLA_NOTIFICATION_URL }}" \
+          -H "Authorization: Bearer ${{ secrets.FAANG_PROD_MENTOR_SLA_NOTIFICATION_API_TOKEN }}"

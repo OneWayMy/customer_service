@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Set API Endpoint URL and Token
         run: |
-          echo "https://775c-176-98-71-133.ngrok-free.app/users/sla-reminder" >> $GITHUB_ENV
-          echo "test_token" >> $GITHUB_ENV
+          echo "API_URL=https://775c-176-98-71-133.ngrok-free.app/users/sla-reminder" >> $GITHUB_ENV
+          echo "API_TOKEN=test_token" >> $GITHUB_ENV
 
       - name: Execute SLA Notification API Request with Production Environment
         run: |

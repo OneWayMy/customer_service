@@ -6,10 +6,28 @@ on:
   workflow_dispatch:
 
 jobs: 
+  send-request-development:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set API URL and Token for Development Environment
+        run: |
+          echo "API_URL=${{ vars.FAANG_TEST_MENTOR_SLA_NOTIFICATION_URL }}" >> $GITHUB_ENV
+          echo "API_TOKEN=${{ secrets.FAANG_TEST_MENTOR_SLA_NOTIFICATION_API_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Execute SLA Notification API Request with Development Environment
+        run: |
+          curl -X POST "$API_URL" \
+          -H "Authorization: Bearer $API_TOKEN"
+          
   send-request-production:
     runs-on: ubuntu-latest
     steps:
-      - name: Execute SLA Notification API Request with Production Environment
-        run: |
-          curl -X POST "${{ vars.FAANG_PROD_MENTOR_SLA_NOTIFICATION_URL }}" \
-          -H "Authorization: Bearer ${{ secrets.FAANG_PROD_MENTOR_SLA_NOTIFICATION_API_TOKEN }}"
+     - name: Set API URL and Token for Production Environment
+       run: |
+          echo "API_URL=${{ vars.FAANG_PROD_MENTOR_SLA_NOTIFICATION_URL }}" >> $GITHUB_ENV
+          echo "API_TOKEN=${{ secrets.FAANG_PROD_MENTOR_SLA_NOTIFICATION_API_TOKEN }}" >> $GITHUB_ENV
+
+     - name: Execute SLA Notification API Request with Production Environment
+       run: |
+          curl -X POST "$API_URL" \
+          -H "Authorization: Bearer $API_TOKEN"

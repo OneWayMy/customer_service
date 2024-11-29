@@ -1,4 +1,4 @@
-name: Send Mentor SLA Notification API Request Based on Environment
+name: Send Mentor SLA Notification API Request
 
 on:
   schedule:
@@ -6,15 +6,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  send-request-production:
+  send-request-development:
     runs-on: ubuntu-latest
     steps:
-      - name: Set API Endpoint URL and Token
+      - name: Set API URL and Token for Development Environment
         run: |
-          echo "API_URL=https://775c-176-98-71-133.ngrok-free.app/users/sla-reminder" >> $GITHUB_ENV
-          echo "API_TOKEN=test_token" >> $GITHUB_ENV
+          echo "API_URL=${{ vars.FAANG_TEST_MENTOR_SLA_NOTIFICATION_URL }}" >> $GITHUB_ENV
+          echo "API_TOKEN=${{ secrets.FAANG_TEST_MENTOR_SLA_NOTIFICATION_API_TOKEN }}" >> $GITHUB_ENV
 
-      - name: Execute SLA Notification API Request with Production Environment
+      - name: Execute SLA Notification API Request with Development Environment
         run: |
           curl -X POST "$API_URL" \
           -H "Authorization: Bearer $API_TOKEN"

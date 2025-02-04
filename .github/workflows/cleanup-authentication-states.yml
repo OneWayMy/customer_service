@@ -1,0 +1,20 @@
+name: Scheduled DELETE API Request for AuthenticationRequestState Cleanup
+
+on:
+  schedule:
+    - cron: '* * * * *'
+  workflow_dispatch:
+
+jobs:
+  send-request-development:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set API URL and Token for Development Environment
+        run: |
+          echo "API_URL=${{ vars.FAANG_TEST_DELETE_AUTH_REQUEST_STATE_API_URL }}" >> $GITHUB_ENV
+          echo "API_TOKEN=${{ secrets.FAANG_TEST_DELETE_AUTH_REQUEST_STATE_API_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Execute DELETE API Request for Development Environment
+        run: |
+          curl -X DELETE "$API_URL" \
+          -H "Authorization: Bearer $API_TOKEN"

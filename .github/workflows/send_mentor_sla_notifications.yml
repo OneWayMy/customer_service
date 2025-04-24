@@ -1,0 +1,34 @@
+name: Send Mentor SLA Notification API Request
+
+on:
+  schedule:
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  send-request-development:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set API URL and Token for Development Environment
+        run: |
+          echo "API_URL=${{ vars.FAANG_TEST_MENTOR_SLA_NOTIFICATION_URL }}" >> $GITHUB_ENV
+          echo "API_TOKEN=${{ secrets.FAANG_TEST_MENTOR_SLA_NOTIFICATION_API_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Execute SLA Notification API Request with Development Environment
+        run: |
+          curl --max-time 300 -X POST "$API_URL" \
+          -H "Authorization: Bearer $API_TOKEN"
+    continue-on-error: true
+  
+  send-request-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set API URL and Token for Production Environment
+        run: |
+          echo "API_URL=${{ vars.FAANG_PROD_MENTOR_SLA_NOTIFICATION_URL }}" >> $GITHUB_ENV
+          echo "API_TOKEN=${{ secrets.FAANG_PROD_MENTOR_SLA_NOTIFICATION_API_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Execute SLA Notification API Request with Production Environment
+        run: |
+          curl --max-time 300 -X POST "$API_URL" \
+          -H "Authorization: Bearer $API_TOKEN"
